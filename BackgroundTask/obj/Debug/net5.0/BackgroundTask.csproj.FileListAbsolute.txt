@@ -1,0 +1,17 @@
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\BackgroundTask.deps.json
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\BackgroundTask.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\ref\BackgroundTask.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\BackgroundTask.pdb
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\Aplication.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\Entities.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\Aplication.pdb
+C:\Users\Alireza\source\repos\Police\BackgroundTask\bin\Debug\net5.0\Entities.pdb
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.csprojAssemblyReference.cache
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.AssemblyInfoInputs.cache
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.AssemblyInfo.cs
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.csproj.CoreCompileInputs.cache
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.csproj.CopyComplete
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\ref\BackgroundTask.dll
+C:\Users\Alireza\source\repos\Police\BackgroundTask\obj\Debug\net5.0\BackgroundTask.pdb
