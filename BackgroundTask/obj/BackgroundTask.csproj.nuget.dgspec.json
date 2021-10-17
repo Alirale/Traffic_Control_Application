@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\BackgroundTask\\BackgroundTask.csproj": {}
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\BackgroundTask\\BackgroundTask.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\Aplication.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\Aplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\Aplication.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\Aplication.csproj",
         "projectName": "Aplication",
-        "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\Aplication.csproj",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\Aplication.csproj",
         "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\obj\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -31,8 +31,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj"
+              "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj": {
+                "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj"
               }
             }
           }
@@ -71,18 +71,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\BackgroundTask\\BackgroundTask.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\BackgroundTask\\BackgroundTask.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\BackgroundTask\\BackgroundTask.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\BackgroundTask\\BackgroundTask.csproj",
         "projectName": "BackgroundTask",
-        "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\BackgroundTask\\BackgroundTask.csproj",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\BackgroundTask\\BackgroundTask.csproj",
         "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\BackgroundTask\\obj\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\BackgroundTask\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -102,11 +102,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\Aplication.csproj": {
-                "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Aplication\\Aplication.csproj"
+              "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\Aplication.csproj": {
+                "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Aplication\\Aplication.csproj"
               },
-              "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj"
+              "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj": {
+                "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj"
               }
             }
           }
@@ -145,18 +145,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj",
-        "projectName": "Entities",
-        "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj",
+        "projectName": "Core",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Core.csproj",
         "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -187,6 +187,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -202,7 +208,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

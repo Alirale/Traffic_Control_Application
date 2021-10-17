@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "hAt+tbLnMd3iZcleq+SsySi5/+918YObBR5InUhZdgV+S/gAjqaY7W4crNFKN7k6WeKBky4e3YA5Igf1S8lmtQ==",
+  "dgSpecHash": "pizsEESOKw+Rtp6gUgIZQVAl0VCKi0BVdE5mPrp94oyvmA7+TpRZ2UE4zBRtZx79KFYuab19vggQPcCXG5AdVQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Endpoint\\Endpoint.csproj",
+  "projectFilePath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Endpoint\\Endpoint.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Alireza\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
+    "C:\\Users\\Alireza\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "C:\\Users\\Alireza\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Alireza\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.8\\microsoft.aspnetcore.authentication.jwtbearer.5.0.8.nupkg.sha512",
     "C:\\Users\\Alireza\\.nuget\\packages\\microsoft.aspnetcore.authentication.openidconnect\\5.0.8\\microsoft.aspnetcore.authentication.openidconnect.5.0.8.nupkg.sha512",
@@ -104,7 +106,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",
     "C:\\Users\\Alireza\\.nuget\\packages\\system.private.uri\\4.3.2\\system.private.uri.4.3.2.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
+    "C:\\Users\\Alireza\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.extensions\\4.3.0\\system.reflection.extensions.4.3.0.nupkg.sha512",

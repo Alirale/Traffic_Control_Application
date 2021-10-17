@@ -1,23 +1,19 @@
 ﻿using Aplication;
 using BackgroundTask;
-using Entities;
-using Entities.Background;
-using Entities.Highway;
+using Core.Entities.Background;
+using Core.Entities.Police;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
-    public class DatabaseContext : DbContext, IDatabasecontextPolice, IDatabasecontextBackground
+    public class DatabaseContext : DbContext//, IDatabasecontextPolice, IDatabasecontextBackground
     {
-        public DatabaseContext(DbContextOptions options) : base(options)
-        {
-
-        }
+        public DatabaseContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Car> cars { get; set; }
         public DbSet<Person> persons { get; set; }
         public DbSet<Ticket> tickets { get; set; }
-        public DbSet<TicketsList> ticketsList { get; set; }
+        public DbSet<TicketsList> ticketsLists { get; set; }
         public DbSet<CarsList> CarsLists { get; set; }
 
 

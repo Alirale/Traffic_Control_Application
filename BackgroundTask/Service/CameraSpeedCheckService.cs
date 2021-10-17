@@ -1,5 +1,4 @@
 ﻿using Aplication.Services.Police;
-using Aplication.Services.Police.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -30,7 +29,7 @@ namespace BackgroundTask.Service
                 var SpeedTicket = dbcontext.ticketsList.FirstOrDefault(p => p.Name == "UnauthorizedSpeed");
                 foreach (var Car in cars)
                 {
-                    if (Car.CarInHighway !=null && Car.CarInHighway.Driver.Speed > Car.CarInHighway.Highway.MaxAllowedSpeed)
+                    if (Car.CarInHighway != null && Car.CarInHighway.Driver.Speed > Car.CarInHighway.Highway.MaxAllowedSpeed)
                     {
                         _carCrudService.Add(new AddCarTicket
                         {

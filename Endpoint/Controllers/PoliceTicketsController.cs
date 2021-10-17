@@ -1,8 +1,7 @@
 ﻿using Aplication.Services.Police;
-using Aplication.Services.Police.Dtos;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
-
-
+using System.Threading.Tasks;
 
 namespace Endpoint.Controllers
 {
@@ -16,40 +15,79 @@ namespace Endpoint.Controllers
             _ticketCrudService = ticketCrudService;
         }
 
-        // GET: api/<PoliceTicketsController>
+
         [HttpGet]
-        public object Get()
+        public async Task<IActionResult> GetAllTicketList()
         {
-            return _ticketCrudService.GetAll();
+            var result =await _ticketCrudService.GetAll();
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("There is no any TicketList in database");
+            }
         }
 
-        // GET api/<PoliceTicketsController>/5
+
         [HttpGet("{Id}")]
-        public object Get(int Id)
+        public async Task<IActionResult> GetTicketListbyId([FromRoute] int Id)
         {
-            ;
-            return _ticketCrudService.Get(Id);
+            var result = await _ticketCrudService.Get(Id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("No TicketList Item found with this information");
+            }
         }
 
-        // POST api/<PoliceTicketsController>
+
         [HttpPost]
-        public object Post([FromBody] AddTicket ticket)
+        public async Task<IActionResult> AddTicketList([FromBody] AddTicketDTO ticket)
         {
-            return _ticketCrudService.Add(ticket);
+            var result = await _ticketCrudService.Add(ticket);
+            if (result)
+            {
+                return Ok("TicketList Item succfully Added");
+            }
+            else
+            {
+                return Forbid("Could not Added TicketList Item");
+            }
         }
 
-        // PUT api/<PoliceTicketsController>/5
+
         [HttpPut("{id}")]
-        public object Put([FromBody] EditTicket ticket)
+        public async Task<IActionResult> EditTicketList([FromBody] EditTicketDTO ticket)
         {
-            return _ticketCrudService.Edit(ticket);
+            var result = await _ticketCrudService.Edit(ticket);
+            if (result)
+            {
+                return Ok("TicketList Item succfully editted");
+            }
+            else
+            {
+                return Forbid("Could not edit TicketList Item");
+            }
         }
 
-        // DELETE api/<PoliceTicketsController>/5
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteTicketList([FromRoute] int id)
         {
-            _ticketCrudService.Delete(id);
+            var result = await _ticketCrudService.Delete(id);
+            if (result)
+            {
+                return Ok("TicketList Item succesfully Deleted");
+            }
+            else
+            {
+                return Forbid("Could not Delete TicketList Item");
+            }
         }
     }
 }

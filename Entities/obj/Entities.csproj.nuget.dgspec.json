@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj": {}
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Entities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj": {
+    "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\Entities.csproj",
+        "projectPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\Alireza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Alireza\\Desktop\\Original_Git\\Police\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\Alireza\\Desktop\\Police\\Traffic_Control_Application\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -57,7 +57,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

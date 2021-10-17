@@ -1,6 +1,7 @@
 ﻿using Aplication.Services.Police;
-using Aplication.Services.Police.Dtos;
+using Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Endpoint.Controllers
 {
@@ -15,40 +16,79 @@ namespace Endpoint.Controllers
             _carCrudService = carCrudService;
         }
 
-        // GET: api/<PoliceCarsController>
+
         [HttpGet]
-        public object Get()
+        public async Task<IActionResult> Get()
         {
-            var OutPut = _carCrudService.GetAll();
-            return OutPut;
+            var result =await _carCrudService.GetAll();
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("There is no any ticket in database");
+            }
         }
 
-        // GET api/<PoliceCarsController>/5
         [HttpGet("{id}")]
-        public object Get(int id)
+        public async Task<IActionResult> Get([FromBody] int id)
         {
-            return _carCrudService.Get(id);
+            var result = _carCrudService.Get(id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("No Ticket found with this information");
+            }
         }
 
-        // POST api/<PoliceCarsController>
+
         [HttpPost]
-        public object Post(AddCarTicket ticket)
+        public async Task<IActionResult> Post([FromForm] AddCarTicketDTO ticket)
         {
-            return _carCrudService.Add(ticket);
+            var result = _carCrudService.Add(ticket);
+            if (result)
+            {
+                return Ok("Ticket succfully Added");
+            }
+            else
+            {
+                return Forbid("Could not Added Ticket");
+            }
         }
 
-        // PUT api/<PoliceCarsController>/5
+
         [HttpPut("{id}")]
-        public object Put(EditCarTicket ticket)
+        public async Task<IActionResult> Put([FromForm] EditCarTicketDTO ticket)
         {
-            return _carCrudService.Edit(ticket);
+            var result = _carCrudService.Edit(ticket);
+            if (result)
+            {
+                return Ok("Ticket succfully editted");
+            }
+            else
+            {
+                return Forbid("Could not edit Ticket");
+            }
         }
 
-        // DELETE api/<PoliceCarsController>/5
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete([FromBody] int id)
         {
-            _carCrudService.Delete(id);
+            var result = _carCrudService.Delete(id);
+            if (result)
+            {
+                return Ok("Ticket succesfully Deleted");
+            }
+            else
+            {
+                return Forbid("Could not Delete Ticket");
+            }
+
         }
     }
 }

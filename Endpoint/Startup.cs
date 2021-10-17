@@ -1,5 +1,5 @@
 using Aplication;
-using Aplication.Services.Persons;
+using Aplication.Services.Person;
 using Aplication.Services.Police;
 using BackgroundTask;
 using BackgroundTask.Service;
@@ -26,20 +26,20 @@ namespace Endpoint
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
 
             string conection = Configuration["conection"];
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DatabaseContext>(o => o.UseSqlServer(conection));
 
 
-            services.AddTransient<IDatabasecontextPolice, DatabaseContext>();
-                     
+            //services.AddTransient<IDatabasecontextPolice, DatabaseContext>();
+
             services.AddTransient<IGetTickets, GetTickets>();
             services.AddTransient<ICarCrudService, CarCrudService>();
             services.AddTransient<ITicketCrudService, TicketCrudService>();
 
-            services.AddTransient<IDatabasecontextBackground, DatabaseContext>();
+            //services.AddTransient<IDatabasecontextBackground, DatabaseContext>();
             services.AddTransient<EnterCarInHighwayService>();
             services.AddTransient<HighwayEngineService>();
             services.AddTransient<CameraSpeedCheckService>();
@@ -49,8 +49,9 @@ namespace Endpoint
             services.AddTransient<IHighwayService, HighWayBackgroundService>();
 
             services.AddHostedService<HighWayBackgroundService>();
-            
 
+            services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
 
             services.AddControllers();
 

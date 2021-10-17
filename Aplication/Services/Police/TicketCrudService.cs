@@ -1,90 +1,82 @@
-﻿using Aplication.Services.Police.Dtos;
-using Entities;
+﻿
+using Core.Entities.Police;
+using Core.Interfaces.RepositoryInterfaces;
+using Core.Models;
+using Core.Models.NewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Aplication.Services.Police
 {
     public interface ITicketCrudService
     {
-        public List<GetTicketsListDTO> GetAll();
-        public GetTicketsListDTO Get(int Id);
-        public ReturningTicketListDTO Add(AddTicket NewTicket);
-        public void Delete(int Id);
-        public bool Edit(EditTicket edit);
+        public Task<List<TicketListDTO>> GetAll();
+        public Task<TicketListDTO> Get(int Id);
+        public Task<bool> Add(AddTicketDTO NewTicket);
+        public Task<bool> Delete(int Id);
+        public Task<bool> Edit(EditTicketDTO edit);
     }
 
     public class TicketCrudService : ITicketCrudService
     {
-        private readonly IDatabasecontextPolice _context;
+        private readonly ITicketListRepository _TicketListRepository;
 
 
-        public TicketCrudService(IDatabasecontextPolice context)
+        public TicketCrudService(ITicketListRepository TicketListRepository)
         {
-            _context = context;
+            _TicketListRepository = TicketListRepository;
         }
 
-        public List<GetTicketsListDTO> GetAll()
+        public async Task<List<TicketListDTO>> GetAll()
         {
-            List<GetTicketsListDTO> Ticketslist = new List<GetTicketsListDTO>();
-            var Tickets = _context.ticketsList.Include(p => p.Tickets).ToList();
-            foreach (var item in Tickets)
+            return await _TicketListRepository.GetAllTicketLists();
+        }
+
+        public async Task<TicketListDTO> Get(int Id)
+        {
+            return await _TicketListRepository.GetTicketListDTOById(Id);
+        }
+
+        public async Task<bool> Add(AddTicketDTO NewTicket)
+        {
+            try
             {
-                Ticketslist.Add(new GetTicketsListDTO()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Price = item.Price
-                });
+                await _TicketListRepository.AddTicketList(NewTicket);
+                return true;
             }
-            return Ticketslist;
-        }
-
-        public GetTicketsListDTO Get(int Id)
-        {
-            var TicketsList = _context.ticketsList.SingleOrDefault(p => p.Id == Id);
-            if (TicketsList != null)
+            catch
             {
-                return new GetTicketsListDTO()
-                {
-                    Id = TicketsList.Id,
-                    Name = TicketsList.Name,
-                    Price = TicketsList.Price
-                };
+                return false;
             }
-            else 
+        }
+
+        public async Task<bool> Delete(int Id)
+        {
+            try
             {
-                return null;
+                await _TicketListRepository.DeleteTicketList(Id);
+                return true;
             }
-
+            catch
+            {
+                return false;
+            }
         }
 
-        public ReturningTicketListDTO Add(AddTicket NewTicket)
+        public async Task<bool> Edit(EditTicketDTO edit)
         {
-            _context.ticketsList.AddAsync(new TicketsList() { Name = NewTicket.Name, Price = NewTicket.Price });
-            _context.SaveChanges();
-            
-            var Confirm = _context.ticketsList.FirstOrDefault(p => p.Name == NewTicket.Name);
-            return new ReturningTicketListDTO(){Id=Confirm.Id,Name=Confirm.Name,Price=Confirm.Price};
-
+            try
+            {
+                await _TicketListRepository.EditTicketList(edit);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
-
-        public void Delete(int Id)
-        {
-            _context.ticketsList.Remove(new TicketsList { Id = Id });
-            _context.SaveChanges();
-        }
-
-        public bool Edit(EditTicket edit)
-        {
-            var ticketsList = _context.ticketsList.FirstOrDefault(p => p.Id == edit.Id);
-            ticketsList.Name = edit.Name;
-            ticketsList.Price = edit.Price;
-            _context.SaveChanges();
-            return true;
-        }
-
 
     }
 }

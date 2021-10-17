@@ -1,7 +1,6 @@
-﻿using Aplication.Services.Persons;
+﻿using Aplication.Services.Person;
 using Microsoft.AspNetCore.Mvc;
-
-
+using System.Threading.Tasks;
 
 namespace Endpoint.Controllers
 {
@@ -15,13 +14,19 @@ namespace Endpoint.Controllers
             _getTickets = getTickets;
         }
 
-        // GET: api/<PersonCarsController>
         [HttpGet]
-        public object Get(string Name)
+        public async Task<IActionResult> Get([FromBody] string Name)
         {
-            return _getTickets.GetAllTickets(Name);
+            var result = _getTickets.GetAllTickets(Name);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return Forbid("There is no any ticket in database");
+            }
         }
-
 
     }
 }

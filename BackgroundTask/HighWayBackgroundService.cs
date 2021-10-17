@@ -36,7 +36,7 @@ namespace BackgroundTask
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            _speedCameraGenerator.AutoGenerates(10,999);
+            _speedCameraGenerator.AutoGenerates(10, 999);
             _ejectAllCarsinHighwayService.Eject();
 
             while (!stoppingToken.IsCancellationRequested)

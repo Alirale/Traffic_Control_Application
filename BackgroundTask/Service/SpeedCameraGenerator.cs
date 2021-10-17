@@ -1,6 +1,4 @@
-﻿using Entities;
-using Entities.Background;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +41,7 @@ namespace BackgroundTask.Service
                         dbcontext.CarsLists.Remove(CarsList);
                     }
                     dbcontext.SaveChanges();
-                } 
+                }
 
                 //Deletes persons
                 var persons = dbcontext.persons.ToList();
@@ -80,32 +78,32 @@ namespace BackgroundTask.Service
 
 
                 //Generate Highways
-                dbcontext.Highways.Add(new Highway() {HighWayDirection = "North", Wheather = "Sunny", MaxAllowedSpeed = 90 });
-                dbcontext.Highways.Add(new Highway() {HighWayDirection = "South", Wheather = "Sunny", MaxAllowedSpeed = 90 });
+                dbcontext.Highways.Add(new Highway() { HighWayDirection = "North", Wheather = "Sunny", MaxAllowedSpeed = 90 });
+                dbcontext.Highways.Add(new Highway() { HighWayDirection = "South", Wheather = "Sunny", MaxAllowedSpeed = 90 });
                 dbcontext.SaveChanges();
 
                 //Generate Peaple
-                dbcontext.persons.Add(new Person() {Name = "Alireza" });
-                dbcontext.persons.Add(new Person() {Name = "Mohamad" });
-                dbcontext.persons.Add(new Person() {Name = "Abbas" });
-                dbcontext.persons.Add(new Person() {Name = "Reza" });
+                dbcontext.persons.Add(new Person() { Name = "Alireza" });
+                dbcontext.persons.Add(new Person() { Name = "Mohamad" });
+                dbcontext.persons.Add(new Person() { Name = "Abbas" });
+                dbcontext.persons.Add(new Person() { Name = "Reza" });
                 dbcontext.SaveChanges();
 
 
                 //Generate CarsList
-                dbcontext.CarsLists.Add(new CarsList() {Name = "Pride" ,CarLength= 1.6 , MaxSpeed =140 });
-                dbcontext.CarsLists.Add(new CarsList() {Name = "L90" ,CarLength= 1.75 , MaxSpeed =160 });
-                dbcontext.CarsLists.Add(new CarsList() {Name = "Sonata" ,CarLength= 1.8 , MaxSpeed =180 });
-                dbcontext.CarsLists.Add(new CarsList() {Name = "Sorento" ,CarLength= 1.8 , MaxSpeed =200 });
+                dbcontext.CarsLists.Add(new CarsList() { Name = "Pride", CarLength = 1.6, MaxSpeed = 140 });
+                dbcontext.CarsLists.Add(new CarsList() { Name = "L90", CarLength = 1.75, MaxSpeed = 160 });
+                dbcontext.CarsLists.Add(new CarsList() { Name = "Sonata", CarLength = 1.8, MaxSpeed = 180 });
+                dbcontext.CarsLists.Add(new CarsList() { Name = "Sorento", CarLength = 1.8, MaxSpeed = 200 });
                 dbcontext.SaveChanges();
 
 
                 //Generate Cars
-                dbcontext.cars.Add(new Car() {PlateNumber = "64P712" , Owner =dbcontext.persons.FirstOrDefault(p=>p.Name== "Alireza"),carsList = dbcontext.CarsLists.FirstOrDefault(p=>p.Name == "Pride") });
-                dbcontext.cars.Add(new Car() {PlateNumber = "87G725", Owner =dbcontext.persons.FirstOrDefault(p=>p.Name== "Alireza"),carsList = dbcontext.CarsLists.FirstOrDefault(p=>p.Name == "Sorento") });
-                dbcontext.cars.Add(new Car() {PlateNumber = "59J973", Owner =dbcontext.persons.FirstOrDefault(p=>p.Name== "Mohamad"),carsList = dbcontext.CarsLists.FirstOrDefault(p=>p.Name == "L90") });
-                dbcontext.cars.Add(new Car() {PlateNumber = "16T781", Owner =dbcontext.persons.FirstOrDefault(p=>p.Name== "Abbas"),carsList = dbcontext.CarsLists.FirstOrDefault(p=>p.Name == "Sonata") });
-                dbcontext.cars.Add(new Car() {PlateNumber = "87G725", Owner =dbcontext.persons.FirstOrDefault(p=>p.Name== "Reza"),carsList = dbcontext.CarsLists.FirstOrDefault(p=>p.Name == "Sorento") });
+                dbcontext.cars.Add(new Car() { PlateNumber = "64P712", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Alireza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Pride") });
+                dbcontext.cars.Add(new Car() { PlateNumber = "87G725", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Alireza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sorento") });
+                dbcontext.cars.Add(new Car() { PlateNumber = "59J973", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Mohamad"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "L90") });
+                dbcontext.cars.Add(new Car() { PlateNumber = "16T781", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Abbas"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sonata") });
+                dbcontext.cars.Add(new Car() { PlateNumber = "87G725", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Reza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sorento") });
                 dbcontext.SaveChanges();
 
                 //Generate TicketList
@@ -113,10 +111,10 @@ namespace BackgroundTask.Service
                 var TicketsLists = dbcontext.ticketsList.ToList();
                 if (!TicketsLists.Any())
                 {
-                    dbcontext.ticketsList.Add(new TicketsList() {Name = "UnauthorizedSpeed", Price = 120000 });
+                    dbcontext.ticketsList.Add(new TicketsList() { Name = "UnauthorizedSpeed", Price = 120000 });
                     dbcontext.SaveChanges();
                 }
-                
+
 
 
                 var Cams = dbcontext.SpeedCameras;

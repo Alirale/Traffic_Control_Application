@@ -1,5 +1,5 @@
-﻿using Entities;
-using Entities.Background;
+﻿using Core.Entities.Background;
+using Core.Entities.Police;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
