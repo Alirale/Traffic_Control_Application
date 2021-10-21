@@ -4,6 +4,7 @@ using Core.Interfaces.RepositoryInterfaces;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
@@ -23,9 +24,9 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var TicketLists = await _context.ticketsLists.ToListAsync();
+                var TicketLists = await _context.ticketsLists.AsNoTracking().ToListAsync();
                 var OutputList = new List<TicketListDTO>();
-                OutputList.ForEach(x => OutputList.Add(_mapper.Map<TicketListDTO>(x)));
+                TicketLists.ForEach(x => OutputList.Add(_mapper.Map<TicketListDTO>(x)));
                 return OutputList;
             }
             catch
@@ -34,14 +35,14 @@ namespace Infrastructure.Repository
             }
         }
 
-        public async Task<TicketListDTO> GetTicketListDTOById(int id)
+        public async Task<TicketListDTO> GetTicketListDTOById(int Id)
         {
             try
             {
-                var Ticket = await _context.ticketsLists.FirstOrDefaultAsync(m => m.Id == id);
+                var Ticket = await _context.ticketsLists.Include(x => x.Tickets).FirstOrDefaultAsync(x=>x.Id==Id);
                 var OutputList = _mapper.Map<TicketListDTO>(Ticket);
                 return OutputList;
-            }
+        }
             catch
             {
                 return null;
@@ -52,7 +53,7 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Ticket = await _context.ticketsLists.FirstOrDefaultAsync(m => m.Id == id);
+                var Ticket = await _context.ticketsLists.Include(x=>x.Tickets).FirstOrDefaultAsync(m => m.Id == id);
                 return Ticket;
             }
             catch
@@ -77,7 +78,8 @@ namespace Infrastructure.Repository
 
         public async Task<bool> DeleteTicketList(int Id)
         {
-            _context.ticketsLists.Remove(await _context.ticketsLists.FindAsync(Id));
+            var ticketlist = await _context.ticketsLists.FindAsync(Id);
+            _context.ticketsLists.Remove(ticketlist);
             return await Save();
         }
 

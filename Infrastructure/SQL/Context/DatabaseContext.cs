@@ -27,6 +27,7 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //DataBaseContextSeed.CatalogSeed(modelBuilder);
             modelBuilder.ConfigureTables();
         }
     }

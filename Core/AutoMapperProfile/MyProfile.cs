@@ -9,35 +9,17 @@ namespace TrafficControl.Core.AutoMapperProfile
         public MyProfile()
         {
             #region TicketList
-            CreateMap<TicketsList, TicketListDTO>();
+            CreateMap<TicketsList, TicketListDTO>().ReverseMap();
             #endregion
+
 
             #region Tickets
             CreateMap<Ticket, TicketDTO>()
-               .ForMember(dest =>
-           dest.Car.CarName,
-           opt => opt.MapFrom(src => src.Car.carsList.Name))
+            .ForMember(dest => dest.Car,
+            opt => opt.MapFrom(src => src.Car))
 
-               .ForMember(dest =>
-           dest.Car.OwnerName,
-           opt => opt.MapFrom(src => src.Car.Owner.Name))
-
-           .ForMember(dest =>
-           dest.Car.PlateNumber,
-           opt => opt.MapFrom(src => src.Car.PlateNumber))
-
-           .ForMember(dest =>
-           dest.TicketsList.Id,
-           opt => opt.MapFrom(src => src.TicketsList.Id))
-
-           .ForMember(dest =>
-           dest.TicketsList.Name,
-           opt => opt.MapFrom(src => src.TicketsList.Name))
-
-           .ForMember(dest =>
-           dest.TicketsList.Price,
-           opt => opt.MapFrom(src => src.TicketsList.Price))
-           .ReverseMap();
+            .ForMember(dest => dest.TicketsList,
+            opt => opt.MapFrom(src => src.TicketsList)).ReverseMap();
             #endregion
 
             #region Person
@@ -45,6 +27,19 @@ namespace TrafficControl.Core.AutoMapperProfile
             .ForMember(dest =>
             dest.Cars,
             opt => opt.MapFrom(src => src.Cars)).ReverseMap();
+            #endregion
+
+
+            #region CarToCarDTO
+            CreateMap<Car, CarTicketDTO>()
+            .ForMember(dest => dest.CarName,
+            opt => opt.MapFrom(src => src.carsList.Name))
+
+            .ForMember(dest => dest.OwnerName,
+            opt => opt.MapFrom(src => src.Owner.Name))
+
+            .ForMember(dest => dest.PlateNumber,
+            opt => opt.MapFrom(src => src.PlateNumber)).ReverseMap();
             #endregion
         }
 

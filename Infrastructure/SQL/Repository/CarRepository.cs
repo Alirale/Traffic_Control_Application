@@ -19,7 +19,7 @@ namespace Infrastructure.Repository
         public async Task<Car> GetCarByPlateNumber(string PlateNumber)
         {
             var Car = await _context.cars.Include(x => x.Tickets).ThenInclude(x => x.TicketsList).Include(x => x.Owner)
-                .Include(x => x.carsList).FirstOrDefaultAsync(x => x.PlateNumber == PlateNumber);
+                .Include(x => x.carsList).AsNoTracking().FirstOrDefaultAsync(x => x.PlateNumber == PlateNumber);
             return Car;
         }
     }

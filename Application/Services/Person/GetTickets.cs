@@ -24,20 +24,28 @@ namespace TrafficControl.Aplication.Services.Person
         public async Task<PersonDTO> GetAllTickets(string Name)
         {
             var Person = await _PersonRepository.GetPersonByName(Name);
-            var CarDTOList = new List<CarDTO>();
-            var Output = new PersonDTO();
-            foreach (var Car in Person.Cars)
+            if (Person != null)
             {
-                var TicketsDTOList = new List<TicketsDTO>();
-                var CarTicket = Car.Tickets;
-                foreach (var Ticket in CarTicket)
+                var CarDTOList = new List<CarDTO>();
+                var Output = new PersonDTO();
+                foreach (var Car in Person.Cars)
                 {
-                    TicketsDTOList.Add(new TicketsDTO() { TicketName = Ticket.TicketsList.Name, TicketPrice = Ticket.TicketsList.Price });
+                    var TicketsDTOList = new List<TicketsDTO>();
+                    var CarTicket = Car.Tickets;
+                    foreach (var Ticket in CarTicket)
+                    {
+                        TicketsDTOList.Add(new TicketsDTO() { TicketName = Ticket.TicketsList.Name, TicketPrice = Ticket.TicketsList.Price });
+                    }
+                    CarDTOList.Add(new CarDTO() { CarName = Car.carsList.Name, PlateNumber = Car.PlateNumber, TicketsList = TicketsDTOList });
                 }
-                CarDTOList.Add(new CarDTO() { CarName = Car.carsList.Name, PlateNumber = Car.PlateNumber, TicketsList = TicketsDTOList });
+                Output.Cars = CarDTOList;
+                return Output;
             }
-            Output.Cars = CarDTOList;
-            return Output;
+            else
+            {
+                return null;
+            }
+
         }
     }
 }

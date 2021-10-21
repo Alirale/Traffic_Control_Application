@@ -1,5 +1,6 @@
 ﻿
 using Application.Services.Police;
+using Core.ApiResponse;
 using Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,10 +9,10 @@ namespace Endpoint.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PoliceTicketsController : ControllerBase
+    public class TicketsListController : ControllerBase
     {
         private readonly ITicketCrudService _ticketCrudService;
-        public PoliceTicketsController(ITicketCrudService ticketCrudService)
+        public TicketsListController(ITicketCrudService ticketCrudService)
         {
             _ticketCrudService = ticketCrudService;
         }
@@ -21,28 +22,28 @@ namespace Endpoint.Controllers
         public async Task<IActionResult> GetAllTicketList()
         {
             var result = await _ticketCrudService.GetAll();
-            if (result != null)
+            if (result.Count != 0)
             {
-                return Ok(result);
+                return new ApiResponse().Success(result);
             }
             else
             {
-                return Forbid("There is no any TicketList in database");
+                return new ApiResponse().FailedToFind("There is no any TicketList in database");
             }
         }
 
 
-        [HttpGet("{Id}")]
-        public async Task<IActionResult> GetTicketListbyId([FromRoute] int Id)
+        [HttpGet("id")]
+        public async Task<IActionResult> GetTicketListbyId([FromQuery] int id)
         {
-            var result = await _ticketCrudService.Get(Id);
+            var result = await _ticketCrudService.Get(id);
             if (result != null)
             {
-                return Ok(result);
+                return new ApiResponse().Success(result);
             }
             else
             {
-                return Forbid("No TicketList Item found with this information");
+                return new ApiResponse().FailedToFind("No TicketList Item found with this information");
             }
         }
 
@@ -51,43 +52,43 @@ namespace Endpoint.Controllers
         public async Task<IActionResult> AddTicketList([FromBody] AddTicketDTO ticket)
         {
             var result = await _ticketCrudService.Add(ticket);
-            if (result)
+            if (result!= null)
             {
-                return Ok("TicketList Item succfully Added");
+                return new ApiResponse().ModificationDone("TicketList Item succfully Added",result);
             }
             else
             {
-                return Forbid("Could not Added TicketList Item");
+                return new ApiResponse().FailedToFind("Could not Added TicketList Item");
             }
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> EditTicketList([FromBody] EditTicketDTO ticket)
         {
             var result = await _ticketCrudService.Edit(ticket);
             if (result)
             {
-                return Ok("TicketList Item succfully editted");
+                return new ApiResponse().ModificationDone("TicketList Item succfully editted",result);
             }
             else
             {
-                return Forbid("Could not edit TicketList Item");
+                return new ApiResponse().FailedToFind("Could not edit TicketList Item");
             }
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTicketList([FromRoute] int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTicketList([FromQuery] int id)
         {
             var result = await _ticketCrudService.Delete(id);
             if (result)
             {
-                return Ok("TicketList Item succesfully Deleted");
+                return new ApiResponse().ModificationDone("TicketList Item succesfully Deleted",result);
             }
             else
             {
-                return Forbid("Could not Delete TicketList Item");
+                return new ApiResponse().FailedToFind("Could not Delete TicketList Item");
             }
         }
     }

@@ -18,14 +18,13 @@ namespace Infrastructure.Repository
             _mapper = mapper;
         }
 
-        public async Task<List<TicketDTO>> GetAllTickets()
+        public async Task<List<Ticket>> GetAllTickets()
         {
             try
             {
-                var Tickets = await _context.tickets.ToListAsync();
-                var OutputList = new List<TicketDTO>();
-                OutputList.ForEach(x => OutputList.Add(_mapper.Map<TicketDTO>(Tickets)));
-                return OutputList;
+                var Tickets = await _context.tickets.Include(x=>x.Car).ThenInclude(x=>x.Owner).Include(x=>x.TicketsList)
+                    .Include(x=>x.Car).ThenInclude(x=>x.carsList).AsNoTracking().ToListAsync();
+                return Tickets;
             }
             catch
             {
@@ -33,11 +32,26 @@ namespace Infrastructure.Repository
             }
         }
 
-        public async Task<TicketDTO> GetTicketDTOById(int id)
+        public async Task<Ticket> GetTicketDTOById(int id)
         {
             try
             {
-                var Tickets = await _context.tickets.Include(x => x.TicketsList).FirstOrDefaultAsync(m => m.Id == id);
+                var Ticket = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(x=>x.Id==id);
+                return Ticket;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<TicketDTO> GetTicketDTOByKeyLessInfo(IdLessTicket ticket)
+        {
+            try
+            {
+                var Tickets = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Car.Id == ticket.CarId && m.TicketDate == ticket.TicketDate && m.TicketsList ==ticket.TicketsList);
                 var OutputList = _mapper.Map<TicketDTO>(Tickets);
                 return OutputList;
             }
@@ -51,7 +65,8 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Tickets = await _context.tickets.Include(x => x.TicketsList).FirstOrDefaultAsync(m => m.Id == id);
+                var Tickets =  await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x=>x.Car).ThenInclude(x=>x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
                 return Tickets;
             }
             catch
@@ -68,7 +83,8 @@ namespace Infrastructure.Repository
 
         public async Task<bool> EditTicket(Ticket EdittedTicket)
         {
-            _context.tickets.Update(EdittedTicket);
+            var Ticket = new Ticket() { CarId = EdittedTicket.CarId, Id = EdittedTicket.Id, TicketDate = EdittedTicket.TicketDate, TicketsList = EdittedTicket.TicketsList };
+            _context.tickets.Update(Ticket);
             return await Save();
         }
 

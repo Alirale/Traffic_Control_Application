@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Background.Services
 {
@@ -15,17 +16,17 @@ namespace Background.Services
         }
 
 
-        public void RunEngine()
+        public async Task RunEngine()
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var dbcontext = scope.ServiceProvider.GetRequiredService<IDatabasecontextBackground>();
-                var CarsInHighway = dbcontext.CarsInHighWay.Include(p => p.Highway).Include(p => p.Driver).ToList();
+                var dbcontext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                var CarsInHighway = await dbcontext.CarsInHighWay.Include(p => p.Highway).Include(p => p.Driver).AsNoTracking().ToListAsync();
                 TimeSpan duration = TimeSpan.MinValue;
                 double DiffrenceTime = 0;
                 Double HighwayLenght = 1000;
 
-                foreach (var Car in CarsInHighway)
+                CarsInHighway.ForEach(async Car =>
                 {
                     if (Car.Location < HighwayLenght)
                     {
@@ -40,19 +41,16 @@ namespace Background.Services
                         Car.LastLocationChangeTime = DateTime.Now;
                         if (Car.Highway.HighWayDirection == "North")
                         {
-                            Car.Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South");
+                            Car.Highway =await dbcontext.Highways.FirstOrDefaultAsync(p => p.HighWayDirection == "South");
                         }
                         else if (Car.Highway.HighWayDirection == "South")
                         {
-                            Car.Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North");
+                            Car.Highway =await dbcontext.Highways.FirstOrDefaultAsync(p => p.HighWayDirection == "North");
                         }
                     }
-
-                    dbcontext.SaveChanges();
-                }
-
+                   await dbcontext.SaveChangesAsync();
+                });
             }
         }
-
     }
 }

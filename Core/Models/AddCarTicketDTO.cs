@@ -1,10 +1,12 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Core.Models
 {
     public class AddCarTicketDTO
     {
-        public String PlateNumber { get; set; }
+        [Required]
+        public string PlateNumber { get; set; }
+        [Required]
         public int TicketsListId { get; set; }
     }
 }

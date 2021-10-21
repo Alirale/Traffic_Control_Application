@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Background.Services
 {
@@ -14,28 +16,23 @@ namespace Background.Services
             _serviceProvider = serviceProvider;
         }
 
-
-
-        public void Eject()
+        public async Task Eject()
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var dbcontext = scope.ServiceProvider.GetRequiredService<IDatabasecontextBackground>();
+                var dbcontext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 var PersonsCars = dbcontext.persons.Include(p => p.Cars).ThenInclude(p => p.carsList).Include(p => p.Cars).ThenInclude(p => p.CarInHighway).ToList();
-
-                foreach (var Person in PersonsCars)
+                PersonsCars.ForEach(Person => 
                 {
-
                     foreach (var Car in Person.Cars)
                     {
                         if (dbcontext.CarsInHighWay.Include(p => p.Car).Any(p => p.Car == Car))
                         {
                             dbcontext.CarsInHighWay.Remove(Car.CarInHighway);
                         }
-
                     }
-                }
-                dbcontext.SaveChanges();
+                });
+                await dbcontext.SaveChangesAsync();
             }
         }
 

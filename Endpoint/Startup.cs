@@ -1,9 +1,6 @@
 
 using Application.Services.Police;
 using Core.Interfaces.RepositoryInterfaces;
-//using Background;
-//using Background.Services;
-//using BackgroundTask.Services;
 using Infrastructure;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TrafficControl.Aplication.Services.Person;
+using TrafficControl.Core.AutoMapperProfile;
 
 namespace Endpoint
 {
@@ -39,7 +37,7 @@ namespace Endpoint
             //services.AddTransient<IDatabasecontextPolice, DatabaseContext>();
 
             services.AddTransient<IGetTickets, GetTickets>();
-            services.AddTransient<ICarCrudService, CarCrudService>();
+            services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ITicketCrudService, TicketCrudService>();
 
             services.AddTransient<ICarRepository, CarRepository>();
@@ -55,10 +53,9 @@ namespace Endpoint
             //services.AddTransient<SpeedCameraGenerator>();
             //services.AddTransient<EjectAllCarsinHighwayService>();
             //services.AddTransient<IHighwayService, HighWayBackgroundService>();
-
             //services.AddHostedService<HighWayBackgroundService>();
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddAutoMapper(typeof(MyProfile));
             services.AddControllersWithViews();
 
             services.AddControllers();

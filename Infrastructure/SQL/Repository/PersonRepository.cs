@@ -18,9 +18,10 @@ namespace Infrastructure.Repository
 
         public async Task<Person> GetPersonByName(string Name)
         {
-            var Persons = await _context.persons.Include(x => x.Cars).ThenInclude(x => x.Tickets)
-                .ThenInclude(x => x.TicketsList).Include(x => x.Cars).ThenInclude(x => x.carsList).ToListAsync();
-            return await _context.persons.FirstOrDefaultAsync(x => x.Name == Name);
+            var person = await _context.persons.Include(x => x.Cars).ThenInclude(x => x.Tickets)
+                .ThenInclude(x => x.TicketsList).Include(x => x.Cars).ThenInclude(x => x.carsList).FirstOrDefaultAsync(x=>x.Name == Name);
+            return person;
         }
+        
     }
 }

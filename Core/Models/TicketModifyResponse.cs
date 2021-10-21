@@ -1,15 +1,15 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.Models
 {
-    public class EditCarTicketDTO
+    public class TicketModifyResponse
     {
-        [Required]
         public int TicketId { get; set; }
-        [Required]
         public String PlateNumber { get; set; }
-        [Required]
         public int TicketsListId { get; set; }
     }
 }
