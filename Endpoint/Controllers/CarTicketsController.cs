@@ -17,7 +17,7 @@ namespace Endpoint.Controllers
         {
             _carCrudService = carCrudService;
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -36,7 +36,7 @@ namespace Endpoint.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> Get([FromQuery] int id)
         {
-            var result =await _carCrudService.Get(id);
+            var result = await _carCrudService.Get(id);
             if (result != null)
             {
                 return new ApiResponse().Success(result);
@@ -52,7 +52,7 @@ namespace Endpoint.Controllers
         public async Task<IActionResult> Post([FromBody] AddCarTicketDTO ticket)
         {
             var result = await _carCrudService.Add(ticket);
-            if (result!= null)
+            if (result != null)
             {
                 return new ApiResponse().ModificationDone("CarTicket succfully Added", result);
             }
@@ -67,9 +67,9 @@ namespace Endpoint.Controllers
         public async Task<IActionResult> Put([FromBody] EditCarTicketDTO ticket)
         {
             var result = await _carCrudService.Edit(ticket);
-            if (result!= null)
+            if (result != null)
             {
-                return new ApiResponse().ModificationDone("CarTicket succfully editted",result);
+                return new ApiResponse().ModificationDone("CarTicket succfully editted", result);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Endpoint.Controllers
             var result = await _carCrudService.Delete(id);
             if (result)
             {
-                return new ApiResponse().ModificationDone("CarTicket succesfully Deleted",result);
+                return new ApiResponse().ModificationDone("CarTicket succesfully Deleted", result);
             }
             else
             {

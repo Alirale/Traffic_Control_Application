@@ -4,6 +4,7 @@ using Core.Interfaces.RepositoryInterfaces;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
@@ -22,8 +23,8 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Tickets = await _context.tickets.Include(x=>x.Car).ThenInclude(x=>x.Owner).Include(x=>x.TicketsList)
-                    .Include(x=>x.Car).ThenInclude(x=>x.carsList).AsNoTracking().ToListAsync();
+                var Tickets = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).AsNoTracking().ToListAsync();
                 return Tickets;
             }
             catch
@@ -37,7 +38,7 @@ namespace Infrastructure.Repository
             try
             {
                 var Ticket = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
-                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(x=>x.Id==id);
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
                 return Ticket;
             }
             catch
@@ -51,7 +52,22 @@ namespace Infrastructure.Repository
             try
             {
                 var Tickets = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
-                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Car.Id == ticket.CarId && m.TicketDate == ticket.TicketDate && m.TicketsList ==ticket.TicketsList);
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Car.Id == ticket.CarId && m.TicketDate == ticket.TicketDate && m.TicketsList == ticket.TicketsList);
+                var OutputList = _mapper.Map<TicketDTO>(Tickets);
+                return OutputList;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public TicketDTO GetTicketDTOByKeyLessInfoForSpeedCam(IdLessTicket ticket)
+        {
+            try
+            {
+                var Tickets = _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).FirstOrDefault(m => m.Car.Id == ticket.CarId && m.TicketDate == ticket.TicketDate && m.TicketsList == ticket.TicketsList);
                 var OutputList = _mapper.Map<TicketDTO>(Tickets);
                 return OutputList;
             }
@@ -65,8 +81,8 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Tickets =  await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
-                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x=>x.Car).ThenInclude(x=>x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+                var Tickets = await _context.tickets.Include(x => x.Car).ThenInclude(x => x.Owner).Include(x => x.TicketsList)
+                    .Include(x => x.Car).ThenInclude(x => x.carsList).Include(x => x.Car).ThenInclude(x => x.CarInHighway).AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
                 return Tickets;
             }
             catch
@@ -79,6 +95,12 @@ namespace Infrastructure.Repository
         {
             _context.cars.Update(NewCar);
             return await Save();
+        }
+
+        public bool AddTicketForSpeedCam(Car NewCar)
+        {
+            _context.cars.Update(NewCar);
+            return _context.SaveChanges() > 0;
         }
 
         public async Task<bool> EditTicket(Ticket EdittedTicket)

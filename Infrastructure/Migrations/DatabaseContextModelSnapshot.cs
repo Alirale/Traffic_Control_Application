@@ -112,6 +112,22 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Highways");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            HighWayDirection = "North",
+                            MaxAllowedSpeed = 90.0,
+                            Wheather = "Sunny"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            HighWayDirection = "South",
+                            MaxAllowedSpeed = 90.0,
+                            Wheather = "Sunny"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Background.SpeedCamera", b =>
@@ -141,13 +157,13 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("OwnerId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("PlateNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("carsListId")
+                    b.Property<int>("carsListId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -157,6 +173,43 @@ namespace Infrastructure.Migrations
                     b.HasIndex("carsListId");
 
                     b.ToTable("cars");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            OwnerId = 1,
+                            PlateNumber = "64P712",
+                            carsListId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            OwnerId = 1,
+                            PlateNumber = "87G725",
+                            carsListId = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            OwnerId = 2,
+                            PlateNumber = "59J973",
+                            carsListId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            OwnerId = 3,
+                            PlateNumber = "16T781",
+                            carsListId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            OwnerId = 4,
+                            PlateNumber = "87G725",
+                            carsListId = 4
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Police.CarsList", b =>
@@ -178,6 +231,36 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CarsLists");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CarLength = 1.6000000000000001,
+                            MaxSpeed = 140.0,
+                            Name = "Pride"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarLength = 1.75,
+                            MaxSpeed = 160.0,
+                            Name = "L90"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CarLength = 1.8,
+                            MaxSpeed = 180.0,
+                            Name = "Sonata"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CarLength = 1.8,
+                            MaxSpeed = 200.0,
+                            Name = "Sorento"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Police.Person", b =>
@@ -190,9 +273,75 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("persons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Alireza",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mohamad",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Abbas",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Reza",
+                            RoleId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Core.Entities.Police.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "Citizen"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "Police"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleName = "SuperAdmin"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Police.Ticket", b =>
@@ -236,6 +385,43 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ticketsLists");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "UnauthorizedSpeed",
+                            Price = 200000f
+                        });
+                });
+
+            modelBuilder.Entity("Core.Entities.Police.Token", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TokenExp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TokenHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("tokens");
                 });
 
             modelBuilder.Entity("Core.Entities.Background.CarInHighway", b =>
@@ -295,15 +481,30 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.Police.Person", "Owner")
                         .WithMany("Cars")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Core.Entities.Police.CarsList", "carsList")
                         .WithMany("Cars")
-                        .HasForeignKey("carsListId");
+                        .HasForeignKey("carsListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("carsList");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Core.Entities.Police.Person", b =>
+                {
+                    b.HasOne("Core.Entities.Police.Role", "Role")
+                        .WithMany("Person")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Core.Entities.Police.Ticket", b =>
@@ -321,6 +522,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("TicketsList");
+                });
+
+            modelBuilder.Entity("Core.Entities.Police.Token", b =>
+                {
+                    b.HasOne("Core.Entities.Police.Person", "User")
+                        .WithMany("tokens")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Entities.Background.Highway", b =>
@@ -350,6 +562,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Police.Person", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("tokens");
+                });
+
+            modelBuilder.Entity("Core.Entities.Police.Role", b =>
+                {
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("Core.Entities.Police.TicketsList", b =>

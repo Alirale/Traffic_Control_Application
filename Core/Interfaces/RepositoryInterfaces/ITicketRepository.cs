@@ -13,8 +13,10 @@ namespace Core.Interfaces.RepositoryInterfaces
         public Task<Ticket> GetTicketDTOById(int id);
         public Task<Ticket> GetTicketById(int id);
         public Task<bool> AddTicket(Car NewCar);
+        public bool AddTicketForSpeedCam(Car NewCar);
         public Task<bool> EditTicket(Ticket EditedTicket);
         public Task<bool> DeleteTicket(int Id);
         public Task<TicketDTO> GetTicketDTOByKeyLessInfo(IdLessTicket ticket);
+        public TicketDTO GetTicketDTOByKeyLessInfoForSpeedCam(IdLessTicket ticket);
     }
 }

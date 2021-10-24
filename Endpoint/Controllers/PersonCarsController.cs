@@ -1,6 +1,5 @@
 ﻿using Core.ApiResponse;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using TrafficControl.Aplication.Services.Person;
 

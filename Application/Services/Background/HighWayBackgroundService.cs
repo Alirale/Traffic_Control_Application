@@ -14,7 +14,6 @@ namespace Background
     {
         private readonly RoadFacade _roadFacade;
         private readonly Starter _starter;
-
         public HighWayBackgroundService(RoadFacade roadFacade, Starter starter)
         {
             _starter = starter;
@@ -23,7 +22,7 @@ namespace Background
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
-            await _starter.Start();
+            _starter.Start();
             await _roadFacade.SimulateRoad(stoppingToken);
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

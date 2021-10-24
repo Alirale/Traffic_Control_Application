@@ -1,34 +1,43 @@
 ﻿using Core.Entities.Background;
-using Core.Entities.Police;
 using Infrastructure;
 using Infrastructure.EntityExtensions;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Background.Services
 {
-    public class SpeedCameraGenerator
+    public interface ISpeedCameraGenerator
+    {
+        public void AutoGenerates();
+    }
+
+    public class SpeedCameraGenerator : ISpeedCameraGenerator
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly int CamCount;
+        private readonly double HighwayLengh;
+        private IConfiguration _configuration;
 
-        public SpeedCameraGenerator(IServiceProvider serviceProvider)
+
+        public SpeedCameraGenerator(IServiceProvider serviceProvider, IConfiguration configuration)
         {
+            _configuration = configuration;
             _serviceProvider = serviceProvider;
+            CamCount = int.Parse(_configuration.GetSection("CamCount").Value); ;
+            HighwayLengh = double.Parse(_configuration.GetSection("HighwayLengh").Value);
         }
 
-        public async Task AutoGenerates(int CamCount, double HighwayLengh)
+        public void AutoGenerates()
         {
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dbcontext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                await DeleteTables(dbcontext);
-                await Generates(dbcontext);
 
-                var Cams = await dbcontext.SpeedCameras.ToListAsync();
+                var Cams = dbcontext.SpeedCameras.ToList();
                 int DistanceBetweenEachCam = Convert.ToInt32(HighwayLengh / CamCount);
 
                 List<int> Lacations = new List<int>();
@@ -47,106 +56,68 @@ namespace Background.Services
 
                 if (!Cams.Any())
                 {
-                    Lacations.ForEach(async Loc =>
-                    {
-                        await dbcontext.SpeedCameras.AddAsync(new SpeedCamera()
-                        {
-                            Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North"),
-                            HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North").Id,
-                            Location = Loc
-                        });
-                    });
+                    Lacations.ForEach(Loc =>
+                   {
+                       dbcontext.SpeedCameras.Add(new SpeedCamera()
+                       {
+                           Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North"),
+                           HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North").Id,
+                           Location = Loc
+                       });
+                   });
 
-                    Lacations.ForEach(async Loc =>
-                    {
-                        await dbcontext.SpeedCameras.AddAsync(new SpeedCamera()
-                        {
-                            Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South"),
-                            HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South").Id,
-                            Location = Loc
-                        });
-                    });
-                    await dbcontext.SaveChangesAsync();
+                    Lacations.ForEach(Loc =>
+                   {
+                       dbcontext.SpeedCameras.Add(new SpeedCamera()
+                       {
+                           Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South"),
+                           HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South").Id,
+                           Location = Loc
+                       });
+                   });
+                    dbcontext.SaveChanges();
                 }
                 else
                 {
-                    //Cams.ForEach(speedcam => dbcontext.SpeedCameras.Remove(speedcam));
                     dbcontext.SpeedCameras.Clear();
-                    await dbcontext.SaveChangesAsync();
-                    Lacations.ForEach(async Loc =>
-                    {
-                        await dbcontext.SpeedCameras.AddAsync(new SpeedCamera()
-                        {
-                            Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North"),
-                            HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North").Id,
-                            Location = Loc
-                        });
-                    });
+                    dbcontext.SaveChanges();
+                    Lacations.ForEach(Loc =>
+                   {
+                       dbcontext.SpeedCameras.Add(new SpeedCamera()
+                       {
+                           Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North"),
+                           HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North").Id,
+                           Location = Loc
+                       });
+                   });
 
-                    Lacations.ForEach(async Loc =>
-                    {
-                        await dbcontext.SpeedCameras.AddAsync(new SpeedCamera()
-                        {
-                            Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South"),
-                            HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South").Id,
-                            Location = Loc
-                        });
+                    Lacations.ForEach(Loc =>
+                   {
+                       dbcontext.SpeedCameras.Add(new SpeedCamera()
+                       {
+                           Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South"),
+                           HighWayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "South").Id,
+                           Location = Loc
+                       });
 
-                    });
-                    await dbcontext.SaveChangesAsync();
+                   });
+                    dbcontext.SaveChanges();
                 }
 
             }
         }
 
-        private static async Task DeleteTables(DatabaseContext dbcontext)
+        private static void DeleteTables(DatabaseContext dbcontext)
         {
             dbcontext.cars.Clear();
             dbcontext.CarsLists.Clear();
             dbcontext.persons.Clear();
             dbcontext.Highways.Clear();
             dbcontext.Drivers.Clear();
-            await dbcontext.SaveChangesAsync();
+            dbcontext.SaveChanges();
         }
 
 
-        private static async Task Generates(DatabaseContext dbcontext)
-        {
-            //Generate Highways
-            dbcontext.Highways.Add(new Highway() { HighWayDirection = "North", Wheather = "Sunny", MaxAllowedSpeed = 90 });
-            dbcontext.Highways.Add(new Highway() { HighWayDirection = "South", Wheather = "Sunny", MaxAllowedSpeed = 90 });
-            await dbcontext.SaveChangesAsync();
-
-            //Generate Peaple
-            dbcontext.persons.Add(new Person() { Name = "Alireza" });
-            dbcontext.persons.Add(new Person() { Name = "Mohamad" });
-            dbcontext.persons.Add(new Person() { Name = "Abbas" });
-            dbcontext.persons.Add(new Person() { Name = "Reza" });
-            await dbcontext.SaveChangesAsync();
-
-            //Generate CarsList
-            dbcontext.CarsLists.Add(new CarsList() { Name = "Pride", CarLength = 1.6, MaxSpeed = 140 });
-            dbcontext.CarsLists.Add(new CarsList() { Name = "L90", CarLength = 1.75, MaxSpeed = 160 });
-            dbcontext.CarsLists.Add(new CarsList() { Name = "Sonata", CarLength = 1.8, MaxSpeed = 180 });
-            dbcontext.CarsLists.Add(new CarsList() { Name = "Sorento", CarLength = 1.8, MaxSpeed = 200 });
-            await dbcontext.SaveChangesAsync();
-
-            //Generate Cars
-            dbcontext.cars.Add(new Car() { PlateNumber = "64P712", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Alireza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Pride") });
-            dbcontext.cars.Add(new Car() { PlateNumber = "87G725", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Alireza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sorento") });
-            dbcontext.cars.Add(new Car() { PlateNumber = "59J973", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Mohamad"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "L90") });
-            dbcontext.cars.Add(new Car() { PlateNumber = "16T781", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Abbas"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sonata") });
-            dbcontext.cars.Add(new Car() { PlateNumber = "87G725", Owner = dbcontext.persons.FirstOrDefault(p => p.Name == "Reza"), carsList = dbcontext.CarsLists.FirstOrDefault(p => p.Name == "Sorento") });
-            await dbcontext.SaveChangesAsync();
-
-            //Generate TicketList
-            var TicketsLists = dbcontext.ticketsLists.ToList();
-            if (!TicketsLists.Any())
-            {
-                dbcontext.ticketsLists.Add(new TicketsList() { Name = "UnauthorizedSpeed", Price = 120000 });
-                await dbcontext.SaveChangesAsync();
-            }
-        }
     }
 
 

@@ -22,7 +22,7 @@ namespace Core.ApiResponse
             });
         }
 
-        public OkObjectResult ModificationDone(string Message,T data)
+        public OkObjectResult ModificationDone(string Message, T data)
         {
             return new(new ApiResponse()
             {

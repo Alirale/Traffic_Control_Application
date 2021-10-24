@@ -4,11 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Background.Services
 {
-    public class EnterCarInHighwayService
+    public interface IEnterCarInHighwayService
+    {
+        public void RunCarEntrance();
+    }
+    public class EnterCarInHighwayService : IEnterCarInHighwayService
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -17,33 +20,32 @@ namespace Background.Services
             _serviceProvider = serviceProvider;
         }
 
-        public async Task RunCarEntrance()
+        public void RunCarEntrance()
         {
             using (var scope = _serviceProvider.CreateScope())
             {
                 bool AddedOneCar = false;
                 var dbcontext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                var PersonsCars =await dbcontext.persons.Include(p => p.Cars).ThenInclude(p => p.carsList).AsNoTracking().ToListAsync();
-
-                PersonsCars.ForEach(async Person => {
+                var PersonsCars = dbcontext.persons.Include(p => p.Cars).ThenInclude(p => p.carsList).AsNoTracking().ToList();
+                ;
+                PersonsCars.ForEach(Person =>
+                {
                     foreach (var Car in Person.Cars)
                     {
-                        if (dbcontext.CarsInHighWay.Include(p => p.Car).ToList().Any(p => p.Car == Car)) { }
+                        if (dbcontext.CarsInHighWay.Include(p => p.Car).ToList().Any(p => p.CarId == Car.Id)) { }
                         else
                         {
                             if (AddedOneCar == false)
                             {
-                                await dbcontext.CarsInHighWay.AddAsync(new CarInHighway()
+                                dbcontext.CarsInHighWay.Add(new CarInHighway()
                                 {
-                                    Car = Car,
                                     CarId = Car.Id,
                                     Driver = new Driver() { Speed = 60 },
                                     LastLocationChangeTime = DateTime.Now,
                                     Location = 0,
-                                    Highway = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North"),
-                                    HighwayId = dbcontext.Highways.FirstOrDefault(p => p.HighWayDirection == "North").Id
+                                    HighwayId = 1
                                 });
-                                await dbcontext.SaveChangesAsync();
+                                dbcontext.SaveChanges();
                                 AddedOneCar = true;
                             }
                         }

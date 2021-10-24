@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Background
 {
-    public class RoadFacade
+    public interface IRoadFacade
+    {
+        public Task SimulateRoad(CancellationToken stoppingToken);
+    }
+    public class RoadFacade : IRoadFacade
     {
         private readonly HighwayEngineService _highwayEngineService;
         private readonly EnterCarInHighwayService _enterCarInHighwayService;
@@ -13,8 +17,9 @@ namespace Application.Services.Background
         private readonly DriverService _driverService;
 
 
-        public RoadFacade(EnterCarInHighwayService enterCarInHighwayService,
+        public RoadFacade(
             HighwayEngineService highwayEngineService,
+            EnterCarInHighwayService enterCarInHighwayService,
             CameraSpeedCheckService cameraSpeedCheckService,
             DriverService driverService)
         {
@@ -27,12 +32,13 @@ namespace Application.Services.Background
 
         public async Task SimulateRoad(CancellationToken stoppingToken)
         {
+
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _enterCarInHighwayService.RunCarEntrance();
-                await _driverService.DriverEngine();
-                await _highwayEngineService.RunEngine();
-                await _cameraSpeedCheckService.RunSpeedCheck();
+                _enterCarInHighwayService.RunCarEntrance();
+                _driverService.DriverEngine();
+                _highwayEngineService.RunEngine();
+                _cameraSpeedCheckService.RunSpeedCheck();
                 await Task.Delay(1000, stoppingToken);
             }
         }

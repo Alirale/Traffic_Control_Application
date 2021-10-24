@@ -1,8 +1,14 @@
-
+using Application.Services.Background;
+using Application.Services.Cars;
 using Application.Services.Police;
+using Background;
+using Background.Services;
+using BackgroundTask.Services;
 using Core.Interfaces.RepositoryInterfaces;
 using Infrastructure;
 using Infrastructure.Repository;
+using Infrastructure.SQL.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using TrafficControl.Aplication.Services.Person;
 using TrafficControl.Core.AutoMapperProfile;
 
@@ -33,27 +40,30 @@ namespace Endpoint
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<DatabaseContext>(o => o.UseSqlServer(conection));
 
-
-            //services.AddTransient<IDatabasecontextPolice, DatabaseContext>();
-
             services.AddTransient<IGetTickets, GetTickets>();
             services.AddTransient<ITicketService, TicketService>();
             services.AddTransient<ITicketCrudService, TicketCrudService>();
+            services.AddTransient<ICarRegisterService, CarRegisterService>();
 
             services.AddTransient<ICarRepository, CarRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<ITicketListRepository, TicketListRepository>();
             services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<ICarsListRepository, CarsListRepository>();
 
-            //services.AddTransient<IDatabasecontextBackground, DatabaseContext>();
-            //services.AddTransient<EnterCarInHighwayService>();
-            //services.AddTransient<HighwayEngineService>();
-            //services.AddTransient<CameraSpeedCheckService>();
-            //services.AddTransient<DriverService>();
-            //services.AddTransient<SpeedCameraGenerator>();
-            //services.AddTransient<EjectAllCarsinHighwayService>();
-            //services.AddTransient<IHighwayService, HighWayBackgroundService>();
-            //services.AddHostedService<HighWayBackgroundService>();
+
+            services.AddTransient<EjectAllCarsinHighwayService>();
+            services.AddTransient<SpeedCameraGenerator>();
+            services.AddTransient<HighwayEngineService>();
+            services.AddTransient<DriverService>();
+            services.AddTransient<CameraSpeedCheckService>();
+            services.AddTransient<EnterCarInHighwayService>();
+            services.AddTransient<HighWayBackgroundService>();
+            services.AddTransient<RoadFacade>();
+            services.AddTransient<Starter>();
+
+            services.AddHostedService<HighWayBackgroundService>();
 
             services.AddAutoMapper(typeof(MyProfile));
             services.AddControllersWithViews();
@@ -64,6 +74,25 @@ namespace Endpoint
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Endpoint", Version = "v1" });
+                var security = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Auth",
+                    Description = "Please Insert Only Your Token Here.",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                c.AddSecurityDefinition(security.Reference.Id, security);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { security , new string[]{ } }
+                });
             });
         }
 

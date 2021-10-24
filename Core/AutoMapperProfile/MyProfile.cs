@@ -41,6 +41,55 @@ namespace TrafficControl.Core.AutoMapperProfile
             .ForMember(dest => dest.PlateNumber,
             opt => opt.MapFrom(src => src.PlateNumber)).ReverseMap();
             #endregion
+
+
+            #region CarToRegisterCarDTO
+            CreateMap<Car, RegisterCarDTO>()
+            .ForMember(dest => dest.PlateNumber,
+            opt => opt.MapFrom(src => src.PlateNumber))
+
+            .ForMember(dest => dest.Owner,
+            opt => opt.MapFrom(src => src.Owner))
+
+            .ForMember(dest => dest.CarsList,
+            opt => opt.MapFrom(src => src.carsList)).ReverseMap();
+            #endregion
+
+            #region PersonToOwnerDTO
+            CreateMap<Person, OwnerDTO>()
+                .ForMember(dest => dest.OwnerName,
+            opt => opt.MapFrom(src => src.Name)).ReverseMap();
+            #endregion
+
+
+            #region CarToRegisterCarREsponseDTO
+            CreateMap<Car, RegisterCarREsponseDTO>()
+            .ForMember(dest => dest.CarId,
+            opt => opt.MapFrom(src => src.Id))
+
+            .ForMember(dest => dest.PlateNumber,
+            opt => opt.MapFrom(src => src.PlateNumber))
+
+            .ForMember(dest => dest.Owner,
+            opt => opt.MapFrom(src => src.Owner))
+
+            .ForMember(dest => dest.CarsList,
+            opt => opt.MapFrom(src => src.carsList)).ReverseMap();
+            #endregion
+
+
+            #region PersonToOwnerDTO
+            CreateMap<Person, OwnerDTO>()
+                .ForMember(dest => dest.OwnerName,
+            opt => opt.MapFrom(src => src.Name)).ReverseMap();
+            #endregion
+
+
+            #region CarsListToCarslistDTO
+            CreateMap<CarsList, CarslistDTO>()
+             .ForMember(dest => dest.CarName,
+             opt => opt.MapFrom(src => src.Name)).ReverseMap();
+            #endregion
         }
 
     }

@@ -1,10 +1,11 @@
 ﻿using Core.Entities.Background;
 using Core.Entities.Police;
+using Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class DatabaseContext : DbContext//, IDatabasecontextPolice, IDatabasecontextBackground
+    public class DatabaseContext : DbContext
     {
         public DatabaseContext(DbContextOptions options) : base(options) { }
 
@@ -13,6 +14,8 @@ namespace Infrastructure
         public DbSet<Ticket> tickets { get; set; }
         public DbSet<TicketsList> ticketsLists { get; set; }
         public DbSet<CarsList> CarsLists { get; set; }
+        public DbSet<Token> tokens { get; set; }
+        public DbSet<Role> roles { get; set; }
 
 
         public DbSet<CarInHighway> CarsInHighWay { get; set; }
@@ -27,7 +30,7 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //DataBaseContextSeed.CatalogSeed(modelBuilder);
+            DataBaseContextSeed.Seeds(modelBuilder);
             modelBuilder.ConfigureTables();
         }
     }

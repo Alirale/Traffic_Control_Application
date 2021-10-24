@@ -1,9 +1,12 @@
 ﻿using Background.Services;
-using System.Threading.Tasks;
 
 namespace Application.Services.Background
 {
-    public class Starter
+    public interface IStarter
+    {
+        public void Start();
+    }
+    public class Starter : IStarter
     {
         private readonly SpeedCameraGenerator _speedCameraGenerator;
         private readonly EjectAllCarsinHighwayService _ejectAllCarsinHighwayService;
@@ -15,10 +18,10 @@ namespace Application.Services.Background
             _ejectAllCarsinHighwayService = ejectAllCarsinHighwayService;
         }
 
-        public async Task Start()
+        public void Start()
         {
-            await _speedCameraGenerator.AutoGenerates(10, 999);
-            await _ejectAllCarsinHighwayService.Eject();
+            _speedCameraGenerator.AutoGenerates();
+            _ejectAllCarsinHighwayService.Eject();
         }
 
     }

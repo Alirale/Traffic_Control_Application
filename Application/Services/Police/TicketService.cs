@@ -13,6 +13,7 @@ namespace Application.Services.Police
         public Task<List<TicketDTO>> GetAll();
         public Task<TicketDTO> Get(int Id);
         public Task<TicketModifyResponse> Add(AddCarTicketDTO NewCarTicket);
+        public TicketModifyResponse AddTicketBySpeedCams(AddCarTicketDTO NewCarTicket);
         public Task<bool> Delete(int Id);
         public Task<TicketModifyResponse> Edit(EditCarTicketDTO edit);
     }
@@ -40,7 +41,8 @@ namespace Application.Services.Police
         {
             List<TicketDTO> Output = new List<TicketDTO>();
             var Tickets = await _TicketRepository.GetAllTickets();
-            Tickets.ForEach(ticket => {
+            Tickets.ForEach(ticket =>
+            {
                 var Ticket = _mapper.Map<TicketDTO>(ticket);
                 Output.Add(Ticket);
             });
@@ -60,14 +62,47 @@ namespace Application.Services.Police
                 var Car = await _CarRepository.GetCarByPlateNumber(NewCarTicket.PlateNumber);
                 var tempTicket = new Ticket() { Car = Car, CarId = Car.Id, TicketDate = DateTime.Now, TicketsList = TicketList };
                 Car.Tickets.Add(tempTicket);
-                var result =await _TicketRepository.AddTicket(Car);
-                var OutputTicket =await _TicketRepository.GetTicketDTOByKeyLessInfo(new IdLessTicket() { CarId = tempTicket.CarId, TicketDate = tempTicket.TicketDate, TicketsList = tempTicket.TicketsList });
+                var result = await _TicketRepository.AddTicket(Car);
+                var OutputTicket = await _TicketRepository.GetTicketDTOByKeyLessInfo(new IdLessTicket() { CarId = tempTicket.CarId, TicketDate = tempTicket.TicketDate, TicketsList = tempTicket.TicketsList });
 
                 if (result)
                 {
-                    return new TicketModifyResponse() 
+                    return new TicketModifyResponse()
                     {
-                       TicketId = OutputTicket.Id,PlateNumber =Car.PlateNumber,TicketsListId= OutputTicket.TicketsList.Id
+                        TicketId = OutputTicket.Id,
+                        PlateNumber = Car.PlateNumber,
+                        TicketsListId = OutputTicket.TicketsList.Id
+                    };
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public TicketModifyResponse AddTicketBySpeedCams(AddCarTicketDTO NewCarTicket)
+        {
+            try
+            {
+                var TicketList = _TicketListRepository.GetTicketListByIdForSpeedCam(NewCarTicket.TicketsListId);
+                var Car = _CarRepository.GetCarByPlateNumberForSpeedCam(NewCarTicket.PlateNumber);
+                var tempTicket = new Ticket() { Car = Car, CarId = Car.Id, TicketDate = DateTime.Now, TicketsList = TicketList };
+                Car.Tickets.Add(tempTicket);
+                var result = _TicketRepository.AddTicketForSpeedCam(Car);
+                var OutputTicket = _TicketRepository.GetTicketDTOByKeyLessInfoForSpeedCam(new IdLessTicket() { CarId = tempTicket.CarId, TicketDate = tempTicket.TicketDate, TicketsList = tempTicket.TicketsList });
+
+                if (result)
+                {
+                    return new TicketModifyResponse()
+                    {
+                        TicketId = OutputTicket.Id,
+                        PlateNumber = Car.PlateNumber,
+                        TicketsListId = OutputTicket.TicketsList.Id
                     };
                 }
                 else
@@ -96,14 +131,16 @@ namespace Application.Services.Police
                 {
                     return new TicketModifyResponse()
                     {
-                        TicketId = ThatTicket.Id,PlateNumber=Car.PlateNumber,TicketsListId=ThatTicket.TicketsList.Id
+                        TicketId = ThatTicket.Id,
+                        PlateNumber = Car.PlateNumber,
+                        TicketsListId = ThatTicket.TicketsList.Id
                     };
                 }
                 else
                 {
                     return null;
                 }
-        }
+            }
             catch
             {
                 return null;

@@ -51,16 +51,16 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "persons",
+                name: "roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_persons", x => x.Id);
+                    table.PrimaryKey("PK_roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,13 +98,34 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "persons",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_persons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_persons_roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "cars",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OwnerId = table.Column<int>(type: "int", nullable: true),
-                    carsListId = table.Column<int>(type: "int", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    carsListId = table.Column<int>(type: "int", nullable: false),
                     PlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -115,13 +136,36 @@ namespace Infrastructure.Migrations
                         column: x => x.carsListId,
                         principalTable: "CarsLists",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_cars_persons_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "persons",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TokenHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TokenExp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tokens_persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +257,64 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "CarsLists",
+                columns: new[] { "Id", "CarLength", "MaxSpeed", "Name" },
+                values: new object[,]
+                {
+                    { 1, 1.6000000000000001, 140.0, "Pride" },
+                    { 2, 1.75, 160.0, "L90" },
+                    { 3, 1.8, 180.0, "Sonata" },
+                    { 4, 1.8, 200.0, "Sorento" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Highways",
+                columns: new[] { "Id", "HighWayDirection", "MaxAllowedSpeed", "Wheather" },
+                values: new object[,]
+                {
+                    { 1, "North", 90.0, "Sunny" },
+                    { 2, "South", 90.0, "Sunny" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "roles",
+                columns: new[] { "Id", "RoleName" },
+                values: new object[,]
+                {
+                    { 1, "Citizen" },
+                    { 2, "Police" },
+                    { 3, "SuperAdmin" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ticketsLists",
+                columns: new[] { "Id", "Name", "Price" },
+                values: new object[] { 1, "UnauthorizedSpeed", 200000f });
+
+            migrationBuilder.InsertData(
+                table: "persons",
+                columns: new[] { "Id", "Name", "PasswordHash", "RoleId" },
+                values: new object[,]
+                {
+                    { 2, "Mohamad", null, 1 },
+                    { 3, "Abbas", null, 1 },
+                    { 4, "Reza", null, 1 },
+                    { 1, "Alireza", null, 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "cars",
+                columns: new[] { "Id", "OwnerId", "PlateNumber", "carsListId" },
+                values: new object[,]
+                {
+                    { 3, 2, "59J973", 2 },
+                    { 4, 3, "16T781", 3 },
+                    { 5, 4, "87G725", 4 },
+                    { 1, 1, "64P712", 1 },
+                    { 2, 1, "87G725", 4 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_cars_carsListId",
                 table: "cars",
@@ -250,6 +352,11 @@ namespace Infrastructure.Migrations
                 column: "SpeedCameraId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_persons_RoleId",
+                table: "persons",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SpeedCameras_HighWayId",
                 table: "SpeedCameras",
                 column: "HighWayId");
@@ -263,6 +370,11 @@ namespace Infrastructure.Migrations
                 name: "IX_tickets_TicketsListId",
                 table: "tickets",
                 column: "TicketsListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tokens_PersonId",
+                table: "tokens",
+                column: "PersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -275,6 +387,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "tickets");
+
+            migrationBuilder.DropTable(
+                name: "tokens");
 
             migrationBuilder.DropTable(
                 name: "Drivers");
@@ -296,6 +411,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "persons");
+
+            migrationBuilder.DropTable(
+                name: "roles");
         }
     }
 }

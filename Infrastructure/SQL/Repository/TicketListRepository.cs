@@ -39,10 +39,10 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Ticket = await _context.ticketsLists.Include(x => x.Tickets).FirstOrDefaultAsync(x=>x.Id==Id);
+                var Ticket = await _context.ticketsLists.Include(x => x.Tickets).FirstOrDefaultAsync(x => x.Id == Id);
                 var OutputList = _mapper.Map<TicketListDTO>(Ticket);
                 return OutputList;
-        }
+            }
             catch
             {
                 return null;
@@ -53,7 +53,20 @@ namespace Infrastructure.Repository
         {
             try
             {
-                var Ticket = await _context.ticketsLists.Include(x=>x.Tickets).FirstOrDefaultAsync(m => m.Id == id);
+                var Ticket = await _context.ticketsLists.Include(x => x.Tickets).FirstOrDefaultAsync(m => m.Id == id);
+                return Ticket;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public TicketsList GetTicketListByIdForSpeedCam(int id)
+        {
+            try
+            {
+                var Ticket = _context.ticketsLists.Include(x => x.Tickets).FirstOrDefault(m => m.Id == id);
                 return Ticket;
             }
             catch

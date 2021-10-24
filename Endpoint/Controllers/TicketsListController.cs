@@ -52,9 +52,9 @@ namespace Endpoint.Controllers
         public async Task<IActionResult> AddTicketList([FromBody] AddTicketDTO ticket)
         {
             var result = await _ticketCrudService.Add(ticket);
-            if (result!= null)
+            if (result != null)
             {
-                return new ApiResponse().ModificationDone("TicketList Item succfully Added",result);
+                return new ApiResponse().ModificationDone("TicketList Item succfully Added", result);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace Endpoint.Controllers
             var result = await _ticketCrudService.Edit(ticket);
             if (result)
             {
-                return new ApiResponse().ModificationDone("TicketList Item succfully editted",result);
+                return new ApiResponse().ModificationDone("TicketList Item succfully editted", result);
             }
             else
             {
@@ -84,7 +84,7 @@ namespace Endpoint.Controllers
             var result = await _ticketCrudService.Delete(id);
             if (result)
             {
-                return new ApiResponse().ModificationDone("TicketList Item succesfully Deleted",result);
+                return new ApiResponse().ModificationDone("TicketList Item succesfully Deleted", result);
             }
             else
             {
