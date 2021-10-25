@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  endpoint:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "3005:80"
+
+
+
+  SQLserverdb:
+    image: mcr.microsoft.com/mssql/server:2019-CU13-ubuntu-20.04
+    container_name: SQLserverdb
+    environment :
+      SA_PASSWORD : "SQLPassword123"
+      ACCEPT_EULA : "Y"
+    ports:
+     - "15006:1433"
+    volumes:
+     - "SQLserver_data:/var/lib/SQLServerDB/data"
+
+
+volumes:
+    SQLserver_data:
+        name: SQLserver_data
+

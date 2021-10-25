@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  endpoint:
+    image: ${DOCKER_REGISTRY-}endpoint
+    build:
+      context: .
+      dockerfile: Endpoint/Dockerfile

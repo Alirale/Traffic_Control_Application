@@ -41,7 +41,7 @@ namespace Endpoint
 
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,DatabaseContext context)
         {
             if (env.IsDevelopment())
             {
@@ -55,6 +55,8 @@ namespace Endpoint
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            //context.Database.Migrate();
 
             app.UseEndpoints(endpoints =>
             {
